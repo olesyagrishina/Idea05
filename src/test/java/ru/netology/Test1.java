@@ -1,6 +1,10 @@
 package ru.netology;
 
+import com.codeborne.selenide.logevents.SelenideLogger;
 import data.DataGenerator;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
@@ -14,6 +18,14 @@ import static com.codeborne.selenide.Selenide.open;
 import static data.DataGenerator.generateDate;
 
 public class Test1 {
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
     @Test
     @DisplayName("Should successful plan and replan meeting")
     void shouldSuccessfulPlanAndReplanMeeting() {
@@ -43,5 +55,6 @@ public class Test1 {
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(exactText("Успешно! Встреча успешно запланирована на " + secondMeetingDate));
     }
+
 }
 
